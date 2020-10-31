@@ -45,6 +45,18 @@ public class registeration{
 		JTextField courseTF=new JTextField();
 		courseTF.setBounds(175, 390, 270, 35);
 		
+		
+		table.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseClicked(java.awt.event.MouseEvent evt) {
+		    	int selectedIndex = table.getSelectedRow();
+		    	
+		    	nameTF.setText(model.getValueAt(selectedIndex, 1).toString());
+		    	phoneTF.setText(model.getValueAt(selectedIndex, 2).toString());
+		    	courseTF.setText(model.getValueAt(selectedIndex, 3).toString());
+		    }
+		});
+		
+		
 		JButton add=new JButton("Add");
 		add.setBounds(50, 470, 190, 40);
 		add.addActionListener(new ActionListener(){
@@ -83,6 +95,41 @@ public class registeration{
 		
 		JButton update=new JButton("Update");
 		update.setBounds(255, 470, 190, 40);
+		update.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				String valueName=nameTF.getText();
+				String valuePhone=phoneTF.getText();
+				String valueCourse=courseTF.getText();
+				int selectedIndex = table.getSelectedRow();
+				
+				try {
+					int id = Integer.parseInt(model.getValueAt(selectedIndex, 0).toString());
+					Class.forName("com.mysql.cj.jdbc.Driver");
+					Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/StudentRegistration","root","");
+					
+					String strQuery = "update student set name= ?,phone= ?,course= ? where id= ?";
+			        PreparedStatement statement = con.prepareStatement(strQuery);
+			        statement.setString(1,valueName);
+			        statement.setString(2,valuePhone);
+			        statement.setString(3,valueCourse);
+			        statement.setInt(4,id);
+			        statement.executeUpdate();
+			        
+		            nameTF.setText("");
+		            phoneTF.setText("");
+		            courseTF.setText("");
+		            table_update();
+				}
+				
+				catch (ClassNotFoundException ex) {
+					ex.printStackTrace();
+					  
+				}
+				catch (SQLException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 		
 		JButton delete=new JButton("Delete");
 		delete.setBounds(50, 530, 398, 40);
