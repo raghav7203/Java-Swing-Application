@@ -1,4 +1,4 @@
 # Student Registeration Portal
-This is a simple inteface showing the power and magic of java(Swing) when connected to database!
+This is a simple interface showing the power and magic of java(Swing) when connected to database!
 
 ![Screenshot](registeration.png)
